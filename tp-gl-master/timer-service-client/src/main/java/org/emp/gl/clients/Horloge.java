@@ -24,14 +24,11 @@ public class Horloge implements TimerChangeListener{
                                 timerService.getSecondes()) ;
     }
     @Override
-    public void propertyChange(String prop, Object oldValue, Object newValue) {
-
-        // On affiche uniquement si la seconde change
-        if (TimerChangeListener.SECONDE_PROP.equals(prop)) {
-            System.out.println(name + " => " + LocalTime.now());
-        }
+    public void propertyChange(java.beans.PropertyChangeEvent evt) {
+    if (evt.getPropertyName().equals(TimerChangeListener.SECONDE_PROP)) {
+        afficherHeure();
     }
-    
+}    
 
 }
 

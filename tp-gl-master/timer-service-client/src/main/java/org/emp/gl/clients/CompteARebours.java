@@ -1,45 +1,40 @@
 package org.emp.gl.clients;
 
-import org.emp.gl.timer.service.TimerChangeListener;
 import org.emp.gl.timer.service.TimerService;
-
-import java.util.Random;
+import org.emp.gl.timer.service.TimerChangeListener;
+import java.beans.PropertyChangeEvent;
 
 public class CompteARebours implements TimerChangeListener {
 
-    private String name;
-    private int compteur;
+    private int valeur;
     private TimerService timerService;
+    private String name;
 
-    public CompteARebours(String name, int initialValue, TimerService timerService) {
+    public CompteARebours(String name, int valeurInitiale, TimerService timerService) {
         this.name = name;
-        this.compteur = initialValue;
+        this.valeur = valeurInitiale;
         this.timerService = timerService;
 
-        // S'abonner au TimerService
         timerService.addTimeChangeListener(this);
-
-        System.out.println(name + " initialisé avec compteur = " + compteur);
+        System.out.println("Compte à rebours " + name + " démarré à " + valeur);
     }
 
     @Override
-    public void propertyChange(String prop, Object oldValue, Object newValue) {
-        // Décrémenter uniquement à chaque seconde
-        if (TimerChangeListener.SECONDE_PROP.equals(prop)) {
-            if (compteur > 0) {
-                compteur--;
-                System.out.println(name + " => compteur = " + compteur);
-            }
-
-            // Se désinscrire lorsque compteur atteint 0
-            if (compteur == 0) {
-                timerService.removeTimeChangeListener(this);
-                System.out.println(name + " => terminé et désinscrit");
-            }
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals(TimerChangeListener.SECONDE_PROP)) {
+            tick();
         }
     }
 
-    public int getCompteur() {
-        return compteur;
+    private void tick() {
+        if (valeur > 0) {
+            valeur--;
+            System.out.println(name + " => " + valeur);
+        }
+
+        if (valeur == 0) {
+            System.out.println(name + " terminé ✅");
+            timerService.removeTimeChangeListener(this);
+        }
     }
 }
