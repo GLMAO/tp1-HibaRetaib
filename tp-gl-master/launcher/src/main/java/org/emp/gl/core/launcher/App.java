@@ -1,20 +1,22 @@
 package org.emp.gl.core.launcher;
 
-import org.emp.gl.clients.Horloge ;
+import org.emp.gl.timer.service.TimerService;
+import org.emp.gl.time.service.impl.DummyTimeServiceImpl;
+import org.emp.gl.clients.Horloge;
 
-/**
- * Hello world!
- *
- */
 public class App {
 
     public static void main(String[] args) {
 
-        testDuTimeService();
-    }
+        // ✅ instancier le TimerService correct
+        TimerService timerService = new DummyTimeServiceImpl();
 
-    private static void testDuTimeService() {
-        Horloge horloge = new Horloge("Num 1") ;
+        // ✅ créer plusieurs horloges
+        new Horloge("H1", timerService);
+        new Horloge("H2", timerService);
+        new Horloge("H3", timerService);
+        // 3. Démarrer le timer
+       // timerService.start();
     }
 
     public static void clearScreen() {
