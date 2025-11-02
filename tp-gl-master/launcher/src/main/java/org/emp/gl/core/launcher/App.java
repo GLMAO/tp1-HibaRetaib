@@ -2,7 +2,7 @@ package org.emp.gl.core.launcher;
 
 import org.emp.gl.time.service.impl.DummyTimeServiceImpl;
 import org.emp.gl.timer.service.TimerService;
-import org.emp.gl.clients.Horloge;
+import org.emp.gl.clients.HorlogeGUI;
 import org.emp.gl.clients.CompteARebours;
 import java.util.Random;
 
@@ -11,10 +11,12 @@ public class App {
 
         TimerService timerService = new DummyTimeServiceImpl();
 
-        // Horloges (affichent l'heure)
-        new Horloge("Horloge A", timerService);
-        new Horloge("Horloge B", timerService);
-        new Horloge("Horloge C", timerService);
+        // Lancer l'interface graphique Swing dans l'EDT
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            new HorlogeGUI(timerService);
+            new HorlogeGUI(timerService);
+            new HorlogeGUI(timerService);
+        });
 
         // Compte à rebours simple
         new CompteARebours("Timer 1", 5, timerService);
@@ -22,7 +24,7 @@ public class App {
         // 10 compteurs aléatoires entre 10 et 20
         Random r = new Random();
         for (int i = 1; i <= 10; i++) {
-            int init = 10 + r.nextInt(11); // 10 à 20
+            int init = 10 + r.nextInt(11);
             new CompteARebours("C" + i, init, timerService);
         }
 
